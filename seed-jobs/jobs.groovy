@@ -1,13 +1,40 @@
-job('example1') {
-    label('JAVA')
-    scm {
-        git {
-            remote {
-                url('https://github.com/javabycode/spring-boot-maven-example-helloworld.git')
+pipelineJob('sample-pipeline') {
+
+    description('sample pipeline seed job ')
+
+    displayName('sample-pipeline')
+
+    configure { flowdefinition ->
+        flowdefinition << delegate.'definition'(class: 'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition', plugin: 'workflow-cps@2.80') {
+
+            'scm'(class: 'hudson.plugins.git.GitSCM', plugin: 'git') {
+
+                'userRemoteConfigs' {
+
+                    'hudson.plugins.git.UserRemoteConfig' {
+
+                        'url'('https://github.com/naveenthangella/Jenkins.git')
+
+                    }
+
+                }
+
+                'branches' {
+
+                    'hudson.plugins.git.BranchSpec' {
+
+                        'name'('*/master')
+
+                    }
+
+                }
+
             }
+
+            'scriptPath'('pipeline-jobs/sample.Jenkinsfile')
+
+            'lightweight'(true)
+
         }
-    }
-    steps {
-        shell('mvn clean package')
     }
 }
