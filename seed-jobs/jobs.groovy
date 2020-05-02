@@ -44,7 +44,9 @@ pipelineJob('CI-pipeline') {
     displayName('CI-pipeline')
 
     triggers {
-        scm('H/2 * * * *')
+        scm('H/2 * * * *'){
+            ignorePostCommitHooks()
+        }
     }
 
     configure { flowdefinition ->
