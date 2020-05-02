@@ -43,11 +43,11 @@ pipelineJob('CI-pipeline') {
     description('pipeline to clone a git repos and generate war file ')
     displayName('CI-pipeline')
 
-    triggers {
-        scm('H/2 * * * *'){
-            ignorePostCommitHooks()
-        }
-    }
+   // triggers {
+   //     scm('H/2 * * * *'){
+   //         ignorePostCommitHooks()
+   //     }
+   // }
 
     configure { flowdefinition ->
         flowdefinition << delegate.'definition'(class: 'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition', plugin: 'workflow-cps@2.80') {
