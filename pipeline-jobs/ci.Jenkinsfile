@@ -18,7 +18,16 @@ pipeline {
         }
         stage ('SonarQube Scan'){
             steps {
-                sh ' mvn sonar:sonar -Dsonar.projectKey=CI-pipeline -Dsonar.host.url=http://sonar.naveenthangella.ga:9000 -Dsonar.login=${SONAR_TOKEN}'
+                withSonarQubeEnv('SonarQube') {
+                    sh ' mvn sonar:sonar -Dsonar.projectKey=CI-pipeline -Dsonar.host.url=http://sonar.naveenthangella.ga:9000 -Dsonar.login=${SONAR_TOKEN}'
+                }
+            }
+        }
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
     }
