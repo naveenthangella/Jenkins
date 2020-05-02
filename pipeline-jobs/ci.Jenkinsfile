@@ -30,5 +30,13 @@ pipeline {
                 }
             }
         }
+        post {
+            success{
+                slackSend color: 'red', message: "BUILD SUCCESS"
+            }
+            failure {
+                slackSend color: 'red', message: "BUILD FAILED - CHECK URL :: ${BUILD_URL}"
+            }
+        }
     }
 }
