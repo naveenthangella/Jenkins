@@ -42,9 +42,11 @@ listView('student') {
 pipelineJob('CI-pipeline') {
     description('pipeline to clone a git repos and generate war file ')
     displayName('CI-pipeline')
+
     triggers {
         scm('H/2 * * * *')
     }
+
     configure { flowdefinition ->
         flowdefinition << delegate.'definition'(class: 'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition', plugin: 'workflow-cps@2.80') {
             'scm'(class: 'hudson.plugins.git.GitSCM', plugin: 'git') {
