@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Compile the code') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean compile'
             }
         }
         stage('SonarQube Scan') {
@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Upload artifacts to NEXUS') {
             steps {
-                sh ' mvn package deploy -DNEXUS_USR=${NEXUS_USR} -DNEXUS_PSW=${NEXUS_PSW}'
+                sh ' mvn -s settings.xml package deploy -DNEXUS_USR=${NEXUS_USR} -DNEXUS_PSW=${NEXUS_PSW}'
             }
         }
 
