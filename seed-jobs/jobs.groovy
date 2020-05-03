@@ -27,6 +27,7 @@ listView('student') {
     filterExecutors()
     jobs {
         name('CI-pipeline')
+        name('RELEASE_pipeline')
     }
     columns {
         status()
@@ -71,7 +72,7 @@ pipelineJob('CI-pipeline') {
 
 pipelineJob('RELEASE-pipeline') {
     description('pipeline to create the test infra and deploy the release artifacts to Nexus')
-    displayName('CI-pipeline')
+    displayName('Release-pipeline')
     configure { flowdefinition ->
         flowdefinition << delegate.'definition'(class: 'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition', plugin: 'workflow-cps@2.80') {
             'scm'(class: 'hudson.plugins.git.GitSCM', plugin: 'git') {
