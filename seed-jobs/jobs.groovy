@@ -27,7 +27,7 @@ listView('student') {
     filterExecutors()
     jobs {
         name('CI-pipeline')
-        name('RELEASE_pipeline')
+        name('RELEASE-pipeline')
     }
     columns {
         status()
