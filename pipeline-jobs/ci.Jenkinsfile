@@ -43,6 +43,7 @@ pipeline {
     }
     post {
         success{
+            archiveArtifacts artifacts: 'url.txt'
             slackSend color: 'red', message: "BUILD SUCCESS"
         }
         failure {
