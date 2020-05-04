@@ -25,7 +25,7 @@ pipeline {
 
         stage('Deploy DEV Snapshot') {
             steps {
-                copyArtifacts filter: 'url.txt', projectName: 'CI-Pipleine'
+                copyArtifacts filter: 'url.txt', projectName: 'CI-pipleine'
                 sh '''
                     URL=$(cat url.txt)
                     cd project-test-infra
