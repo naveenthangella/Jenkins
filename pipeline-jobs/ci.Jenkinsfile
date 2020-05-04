@@ -33,7 +33,10 @@ pipeline {
         }
         stage('Upload artifacts to NEXUS') {
             steps {
-                sh ' mvn -s settings.xml package deploy -DNEXUS_USR=${NEXUS_USR} -DNEXUS_PSW=${NEXUS_PSW}'
+                sh '''
+                    mvn -s settings.xml package deploy -DNEXUS_USR=${NEXUS_USR} -DNEXUS_PSW=${NEXUS_PSW} | tee output.txt
+                    cat output.txt  | grep Uploaded | grep war |xargs -n1 | grep ^http >url.txt 
+                '''
             }
         }
 
