@@ -97,6 +97,9 @@ pipelineJob('RELEASE-pipeline') {
 pipelineJob('MANUAL-release') {
     description('')
     displayName('MANUAL-release')
+    parameters {
+        stringParam('RELEASE_VERSION', '','RELEASE VERSION OF APPLICATION')
+    }
     configure { flowdefinition ->
         flowdefinition << delegate.'definition'(class: 'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition', plugin: 'workflow-cps@2.80') {
             'scm'(class: 'hudson.plugins.git.GitSCM', plugin: 'git') {
