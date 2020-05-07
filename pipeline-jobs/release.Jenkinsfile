@@ -15,26 +15,44 @@ pipeline {
 
         stage('Create Test Infra') {
             steps {
-                sh '''
-                    cd project-test-infra
-                    terraform init 
-                    terraform apply -auto-approve
-                '''
+                ansiColor('xterm') {
+                    sh '''
+                        cd project-test-infra
+                        terraform init 
+                        terraform apply -auto-approve
+                    '''
+                }
             }
         }
 
         stage('Deploy DEV Snapshot') {
             steps {
                 copyArtifacts filter: 'url.txt', projectName: 'CI-pipeline'
-                sh '''
-                    URL=$(cat url.txt)
-                    cd project-test-infra
-                    cat deploy/deploy.tf >>provider.tf
-                    terraform init 
-                    terraform apply -auto-approve -var URL=${URL}
-                '''
+                ansiColor('xterm') {
+                    sh '''
+                        URL=$(cat url.txt)
+                        cd project-test-infra
+                        cat deploy/deploy.tf >>provider.tf
+                        terraform init 
+                        terraform apply -auto-approve -var URL=${URL}
+                    '''
+                }
             }
         }
+
+        stage('Selenium Tests') {
+            steps {
+                git credentialsId: 'Git-User', url: 'https://github.com/naveenthangella/selenium.git'
+                ansiColor('xterm') {
+                    sh '''
+                       IP=$(cat /tmp/ip.txt)
+                       sed -i -e "s/IPADDRESS/$IP/"  src/test/java/framework/CrudStudent.java
+                       mvn clean install "-Dremote=true" "-DseleniumGridURL=http://selenium.naveenthangella.ga:4444/wd/hub" "-Dbrowser=Chrome" "-Doverwrite.binaries=true"
+                    '''
+                }
+            }
+        }
+
     }
     post {
         success{

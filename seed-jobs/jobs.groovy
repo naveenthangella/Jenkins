@@ -41,7 +41,7 @@ listView('student') {
 }
 
 pipelineJob('CI-pipeline') {
-    description('pipeline to clone a git repos and generate war file ')
+    description('pipeline to clone a git repos and generate war file and deploy the artifact to nexus')
     displayName('CI-pipeline')
 
    // triggers {
@@ -71,7 +71,7 @@ pipelineJob('CI-pipeline') {
 }
 
 pipelineJob('RELEASE-pipeline') {
-    description('pipeline to create the test infra and deploy the release artifacts to Nexus')
+    description('pipeline to create the test infra and deploy the the application into test infra')
     displayName('Release-pipeline')
     configure { flowdefinition ->
         flowdefinition << delegate.'definition'(class: 'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition', plugin: 'workflow-cps@2.80') {
@@ -88,6 +88,29 @@ pipelineJob('RELEASE-pipeline') {
                 }
             }
             'scriptPath'('pipeline-jobs/release.Jenkinsfile')
+            'lightweight'(true)
+        }
+    }
+}
+
+pipelineJob('MANUAL-release') {
+    description('')
+    displayName('MANUAL-release')
+    configure { flowdefinition ->
+        flowdefinition << delegate.'definition'(class: 'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition', plugin: 'workflow-cps@2.80') {
+            'scm'(class: 'hudson.plugins.git.GitSCM', plugin: 'git') {
+                'userRemoteConfigs' {
+                    'hudson.plugins.git.UserRemoteConfig' {
+                        'url'('https://github.com/naveenthangella/Jenkins.git')
+                    }
+                }
+                'branches' {
+                    'hudson.plugins.git.BranchSpec' {
+                        'name'('*/master')
+                    }
+                }
+            }
+            'scriptPath'('pipeline-jobs/manual-release.Jenkinsfile')
             'lightweight'(true)
         }
     }
