@@ -28,6 +28,7 @@ listView('student') {
     jobs {
         name('CI-pipeline')
         name('RELEASE-pipeline')
+        name('MANUAL-release')
     }
     columns {
         status()
