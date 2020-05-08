@@ -21,7 +21,7 @@ pipeline {
     }
     post {
         success{
-            slackSend color: 'blue', message: "BUILD SUCCESS"
+            slackSend color: 'blue', message: "SUCCESSFULLY RELEASED WITH MANUAL VERSION"
         }
         failure {
             slackSend color: 'red', message: "BUILD FAILED - CHECK URL :: ${BUILD_URL}"

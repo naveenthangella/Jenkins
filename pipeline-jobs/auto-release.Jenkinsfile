@@ -11,16 +11,15 @@ pipeline {
             steps {
                 git credentialsId: 'Git-User', url: 'https://github.com/naveenthangella/student.git'
                 sh '''
-                    sed -i -e "s/WORD/${RELEASE_VERSION}/" WebContent/index.jsp
-                    mvn versions:set -DnewVersion=${RELEASE_VERSION}-RELEASE
-                    mvn -s settings.xml package deploy -DNEXUS_USR=${NEXUS_USR} -DNEXUS_PSW=${NEXUS_PSW} 
+                    mvn -s settings.xml release:prepare -B
+                    mvn -s settings.xml release:perform -DNEXUS_USR=${NEXUS_USR} -DNEXUS_PSW=${NEXUS_PSW} 
                 '''
             }
         }
     }
     post {
         success{
-            slackSend color: 'blue', message: "BUILD SUCCESS"
+            slackSend color: 'blue', message: "SUCCESSFULLY RELEASED WITH AUTO VERSION"
         }
         failure {
             slackSend color: 'red', message: "BUILD FAILED - CHECK URL :: ${BUILD_URL}"
