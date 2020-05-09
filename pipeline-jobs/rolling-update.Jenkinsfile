@@ -15,7 +15,8 @@ pipeline {
         stage('Do Deployment') {
             steps {
                 sh '''
-                    ansible-playbook -i /tmp/prod-hosts Playbooks/deploy.yml -e RELEASE_VERSION=${RELEASE_VERSION}
+                      
+                    ansible-playbook -i /tmp/prod-hosts --private-key= ~/.ssh/id_rsa Playbooks/deploy.yml -e RELEASE_VERSION=${RELEASE_VERSION}
                 '''
             }
         }
