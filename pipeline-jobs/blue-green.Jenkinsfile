@@ -13,7 +13,7 @@ pipeline {
                 ansiColor('xterm') {
                     sh '''
                         export AWS_DEFAULT_REGION=us-west-2 
-                        cd PROJECT/studentapp/final
+                        cd Project/studentapp/final
                         make prod-apply-bg
                     '''
                 }
