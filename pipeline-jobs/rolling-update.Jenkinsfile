@@ -2,6 +2,9 @@ pipeline {
     agent {
         label 'JAVA'
     }
+    environment{
+        CENTOS=credentials('CENTOS-KEY')
+    }
 
     stages {
         stage('Pull list of servers') {
@@ -15,8 +18,9 @@ pipeline {
         stage('Do Deployment') {
             steps {
                 sh '''
-                      
-                    ansible-playbook -i /tmp/prod-hosts --private-key= ~/.ssh/id_rsa Playbooks/deploy.yml -e RELEASE_VERSION=${RELEASE_VERSION}
+                    cat $CENTOS >pem
+                    chmod 600 pem
+                    ansible-playbook -i /tmp/prod-hosts --private-key=./pem Playbooks/deploy.yml -e RELEASE_VERSION=${RELEASE_VERSION}
                 '''
             }
         }
