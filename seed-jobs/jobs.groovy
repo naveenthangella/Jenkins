@@ -143,3 +143,29 @@ pipelineJob('AUTO-release') {
         }
     }
 }
+
+pipelineJob('ROLLING-update') {
+    description('ROLLING-update')
+    displayName('ROLLING-update')
+    parameters {
+        stringParam('RELEASE_VERSION', '','RELEASE VERSION OF APPLICATION')
+    }
+    configure { flowdefinition ->
+        flowdefinition << delegate.'definition'(class: 'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition', plugin: 'workflow-cps@2.80') {
+            'scm'(class: 'hudson.plugins.git.GitSCM', plugin: 'git') {
+                'userRemoteConfigs' {
+                    'hudson.plugins.git.UserRemoteConfig' {
+                        'url'('https://github.com/naveenthangella/Jenkins.git')
+                    }
+                }
+                'branches' {
+                    'hudson.plugins.git.BranchSpec' {
+                        'name'('*/master')
+                    }
+                }
+            }
+            'scriptPath'('pipeline-jobs/rolling-update.Jenkinsfile')
+            'lightweight'(true)
+        }
+    }
+}
