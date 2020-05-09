@@ -31,6 +31,7 @@ listView('student') {
         name('MANUAL-release')
         name('AUTO-release')
         name('ROLLING-update')
+        name('BlueGreen-Deploy')
     }
     columns {
         status()
@@ -166,6 +167,32 @@ pipelineJob('ROLLING-update') {
                 }
             }
             'scriptPath'('pipeline-jobs/rolling-update.Jenkinsfile')
+            'lightweight'(true)
+        }
+    }
+}
+
+pipelineJob('BlueGreen-Deploy') {
+    description('BlueGreen-Deploy')
+    displayName('BlueGreen-Deploy')
+    parameters {
+        stringParam('RELEASE_VERSION', '','RELEASE VERSION OF APPLICATION')
+    }
+    configure { flowdefinition ->
+        flowdefinition << delegate.'definition'(class: 'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition', plugin: 'workflow-cps@2.80') {
+            'scm'(class: 'hudson.plugins.git.GitSCM', plugin: 'git') {
+                'userRemoteConfigs' {
+                    'hudson.plugins.git.UserRemoteConfig' {
+                        'url'('https://github.com/naveenthangella/Jenkins.git')
+                    }
+                }
+                'branches' {
+                    'hudson.plugins.git.BranchSpec' {
+                        'name'('*/master')
+                    }
+                }
+            }
+            'scriptPath'('pipeline-jobs/blue-green.Jenkinsfile')
             'lightweight'(true)
         }
     }

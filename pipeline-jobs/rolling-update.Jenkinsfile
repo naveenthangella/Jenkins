@@ -11,6 +11,7 @@ pipeline {
             steps {
                 git credentialsId: 'Git-User', url: 'https://github.com/naveenthangella/Ansible.git'
                 sh '''
+                    export AWS_DEFAULT_REGION=us-west-2
                     aws ec2 describe-instances --filters "Name=tag:ENV,Values=PROD"  --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text >/tmp/prod-hosts 
                 '''
             }
