@@ -19,6 +19,7 @@ pipeline {
         stage('Do Deployment') {
             steps {
                 sh '''
+                    export ANSIBLE_HOST_KEY_CHECKING=false
                     cat $CENTOS >pem
                     chmod 600 pem
                     ansible-playbook -i /tmp/prod-hosts --private-key=./pem Playbooks/deploy.yml -e RELEASE_VERSION=${RELEASE_VERSION}
