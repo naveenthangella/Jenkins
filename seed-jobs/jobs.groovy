@@ -30,6 +30,7 @@ listView('student') {
         name('RELEASE-pipeline')
         name('MANUAL-release')
         name('AUTO-release')
+        name('ROLLING-update')
     }
     columns {
         status()
