@@ -22,7 +22,7 @@ pipeline {
 
         stage('Pull list of Servers') {
             steps {
-                git credentialsId: 'Git-User', url: 'https://github.com/naveenthangella/ansible.git'
+                git credentialsId: 'Git-User', url: 'https://github.com/naveenthangella/Ansible.git'
                 sh '''
                     aws ec2 describe-instances --filters "Name=tag:DEPLOYMENT,Values=green"  --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text >/tmp/prod-hosts-green
                 '''
