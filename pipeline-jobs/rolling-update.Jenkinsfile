@@ -8,7 +8,7 @@ pipeline {
             steps {
                 git credentialsId: 'Git-User', url: 'https://github.com/naveenthangella/Ansible.git'
                 sh '''
-                    aws ec2 describe-instances --filters "Name=tag:DEPLOYMENT,Values=blue"  --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text >/tmp/prod-hosts 
+                    aws ec2 describe-instances --filters "Name=tag:PROD,Values=blue"  --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text >/tmp/prod-hosts 
                 '''
             }
         }
